@@ -185,6 +185,7 @@ gulp.task('copy', function () {
             '!' + develop.assets + '**/scss/*',
             '!' + develop.assets + '**/scss/',
             develop.assets + '**/*.html',
+            develop.assets + '**/service-worker.js',
             develop.assets + '**/*.css'
         ],
             //develop.assets + '**/js/*.js',
@@ -203,9 +204,17 @@ gulp.task('copy', function () {
         {base: develop.root}
     )
         .pipe(gulp.dest(release.root));
-
 });
 
+// serviceWorker
+gulp.task('sw', function () {
+    console.log('--------- clone service worker task ----------');
+    gulp.src(
+        [develop.assets + '**/service-worker.js'],
+        {base: develop.root}
+    )
+        .pipe(gulp.dest(release.root));
+});
 
 // browserSync
 gulp.task('browser-sync', function () {
@@ -316,6 +325,7 @@ gulp.task('default', ['output','browser-sync'], function () {
     gulp.watch(develop.assets + 'images/**/*', ['image-min']);
     gulp.watch(develop.assets + 'js/**/*', ['uglify']);
     gulp.watch('./**/*.html', ['bs-reload']);
+    gulp.watch('./**/service-worker.js', ['sw']);
 });
 // gulpのデフォルト
 gulp.task('sync', ['browser-sync'], function () {
